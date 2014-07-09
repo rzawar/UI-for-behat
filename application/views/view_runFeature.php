@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+        <link rel="stylesheet" href="<?= base_url().'../../../assests/css/bootstrap.min.css' ?>">
+         <link rel="stylesheet" href="<?= base_url().'../../../assests/css/bootstrap.css' ?>">
+	<title>Welcome to unit testing</title>
+
+</head>
+<body>
+
+<div id="container">
+    <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+    <h1>Welcome to Unit testing</h1>
+
+<?php
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$tagsarr = implode("&&", $tagsarr);
+echo '<div class="alert alert-success" role="alert"><strong>Tags</strong> : '.$tags.'</div>';
+echo '<hr><div class="alert alert-info" role="alert"><pre>'.$contents.'</pre></div><hr>';
+
+/*echo form_open('../testFeature');
+echo form_input('data',$tagsarr);
+echo form_submit('test', 'Test this feature');
+echo form_close();
+*/?>
+    <form class="form-horizontal" role="form" action="<?= base_url().'../testFeature';?>" method="post">
+				 <div class="form-group">
+				    <div class="col-lg-6">
+				      <input type="text" class="input-large form-control" name="data" id="data" value ="<?php echo $tags ?>">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-lg-offset-0 col-lg-10">
+				      <button type="submit" class="btn btn-success">Test</button> <a href="<?= '../';?>" class="btn btn-primary">Cancel</a>
+				    </div>
+				  </div>
+				</form>
+
+</div>
+    </div>
+</div>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.min.js' ?>"></script>
+</body>
+</html>
