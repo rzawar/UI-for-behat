@@ -85,6 +85,7 @@ class Home extends CI_Controller{
     public function testFeature(){
 
         $tag =  $_POST['data'];
+        $result = "Not set yet";
         $result = shell_exec('cd ../../../altests && behat --tags \''.$tag.'\'');
 
 
@@ -92,8 +93,8 @@ class Home extends CI_Controller{
                 $data['result'] = "Success<br><hr><pre>".$result."</pre>";
                 $data['bool'] = true;
         }
-        else{
-            $data['val'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+        else {
+            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
              $data['bool'] = false;
         }
 

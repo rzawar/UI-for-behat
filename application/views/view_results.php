@@ -13,7 +13,7 @@
                 if($bool)
                     echo '<div class="alert alert-success" role="alert"><strong>Test is </strong> : '.$result.'</div>';
                 else
-                    echo '<div class="alert alert-warning" role="alert"><strong>Rest is </strong> : '.$result.'</div>';
+                    echo '<div class="alert alert-Danger" role="alert"><strong>Test is </strong> : '.$result.'</div>';
             ?></h3>
         </div>
         </div>

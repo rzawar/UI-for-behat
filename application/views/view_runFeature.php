@@ -31,7 +31,7 @@ echo form_close();
     <form class="form-horizontal" role="form" action="<?= base_url().'../testFeature';?>" method="post">
 				 <div class="form-group">
 				    <div class="col-lg-6">
-				      <input type="text" class="input-large form-control" name="data" id="data" value ="<?php echo $tags ?>">
+				      <input type="text" class="input-large form-control" name="data" id="data" value ="<?php echo $tagsarr ?>">
 				    </div>
 				  </div>
 				  <div class="form-group">
@@ -44,7 +44,10 @@ echo form_close();
 </div>
     </div>
 </div>
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.min.js' ?>"></script>
+
+<script type="text/javascript" src="<?= base_url().'../assests/js/jquery-1.11.1.js'?>"></script>
+<script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.min.js'?>"></script>
+<script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.js'?>"></script>
+
 </body>
 </html>

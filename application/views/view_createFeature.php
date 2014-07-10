@@ -98,7 +98,7 @@
 				   </div>
 				  <div class="form-group">
 				    <div class="col-lg-offset-3 col-lg-10">
-                                      <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Scenario</a>
+                                        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add scenario</a>
 				      <button type="submit" class="btn btn-success">Create feature</button>
                                       <a class="btn btn-primary">Cancel</a>
 				    </div>
@@ -146,27 +146,28 @@
 </div>
 </div>
     <!-- Modal for adding the scenario-->
-<div class="modal fade" id ="myModal">
+ <div class="modal fade" id="myModal" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Add Scenario</h4>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-
-               
-          
-
+        ...
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.min.js' ?>"></script>
+<script type="text/javascript" src="<?= base_url().'../assests/js/bootstrap.js' ?>"></script>
+
+
 </body>
 </html>
