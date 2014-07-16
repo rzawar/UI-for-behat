@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="<?= base_url().'../../../assests/css/bootstrap.min.css' ?>">
          <link rel="stylesheet" href="<?= base_url().'../../../assests/css/bootstrap.css' ?>">
 	<title>Welcome to unit testing</title>
-
+        
     </head>
     <body>
         <div class="row">
@@ -15,6 +15,14 @@
                 else
                     echo '<div class="alert alert-Danger" role="alert"><strong>Test is </strong> : '.$result.'</div>';
             ?></h3>
+            <form class="form-horizontal" role="form" action="<?= base_url().'../checkDifference';?>" method="post">
+				  <div class="form-group">
+				    <div class="col-lg-offset-0 col-lg-10">
+				      <button type="submit" class="btn btn-success">Check the Difference</button>
+				    </div>
+				  </div>
+				</form>
+            
         </div>
         </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

@@ -100,6 +100,11 @@ class Home extends CI_Controller{
 
         $this->load->view('view_results',$data);
     }
+    public function checkDifference(){
+        $images = directory_map('./application/img');
+        $data['images']= $images;
+        $this->load->view('view_difference',$data);
+    }
 }
 
 ?>
