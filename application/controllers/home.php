@@ -70,26 +70,33 @@ class Home extends CI_Controller{
 
         
         $dir = '../../../altests/features/';
+        $dirFeatur = '../../../altests/';
         $feature = $this->input->get('var');
         $resource = fopen($dir.$feature, "r");
         $tags = fgets($resource);
         $contents = fread($resource, filesize($dir.$feature));
         //$tags = split(" ", $contents);
+        $browsers = fread(fopen($dirFeatur.'browsers',"r"),  filesize($dirFeatur.'browsers'));
         $tagsarr = explode(" ", $tags);
         $data['tags'] = $tags;
         $data['contents'] = $contents;
         $data['tagsarr'] = $tagsarr;
+        $data['browsers'] = explode("\n",$browsers);
         $this->load->view('view_runFeature',$data);
         
     }
     public function testFeature(){
 
         $tag =  $_POST['data'];
+        $browser = $_POST['browserval'];
         $result = "Not set yet";
-        $result = shell_exec('cd ../../../altests && behat --tags \''.$tag.'\'');
+        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \''.$tag.'\'';
+      
+        $result = shell_exec($command);
+        $data['browser'] = $browser;
+        $data['command'] = $command;
 
-
-        if(strpos($result, 'failed')== FALSE){
+        if(strpos($result, 'failed')== FALSE ){
                 $data['result'] = "Success<br><hr><pre>".$result."</pre>";
                 $data['bool'] = true;
         }

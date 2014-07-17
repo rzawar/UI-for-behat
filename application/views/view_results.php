@@ -9,6 +9,8 @@
     <body>
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
+         <h1>Welcome to Unit testing</h1>
+        <div class="alert alert-warning" role="alert">Executing command <?php echo $command ;?>  </div>
         <h3><?php
                 if($bool)
                     echo '<div class="alert alert-success" role="alert"><strong>Test is </strong> : '.$result.'</div>';
