@@ -53,7 +53,7 @@ echo form_close();
                                               } ?>
                                          </ul>
                                         </div>
-                                      <input type="text" class ="form-control browser" id="browserval" name="browserval" readonly>
+                                      <input type="text" class ="form-control browser" id="browserval" name="browserval" value="Windows8_FF" readonly>
                                       </div>
                                       </div>
                                   </div>

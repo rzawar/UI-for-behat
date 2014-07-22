@@ -39,7 +39,8 @@ class Home extends CI_Controller{
          $data['features']=$arr;
          //$this->load->view('view_displayFeatures',$data);
        }
-        $this->load->view('view_createFeature',$data);
+       $data['browsers']= $this->getBrowsers();
+        $this->load->view('view_homePage',$data);
 
     }
     public function test(){
@@ -111,6 +112,55 @@ class Home extends CI_Controller{
         $images = directory_map('./application/img');
         $data['images']= $images;
         $this->load->view('view_difference',$data);
+    }
+    public function getBrowsers(){
+
+        $dirFeatur = '../../../altests/';
+
+        return explode("\n",fread(fopen($dirFeatur.'browsers',"r"),  filesize($dirFeatur.'browsers')));
+    }
+    public function testBaseFeature(){
+
+         $browser = "default browser";//$_POST['browserval'];
+        $result = "Not set yet";
+        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getBase\'';
+
+        $result = "rohit";//shell_exec($command);
+        $data['browser'] = $browser;
+        $data['command'] = $command;
+
+        if(strpos($result, 'failed')== FALSE ){
+                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
+                $data['bool'] = true;
+        }
+        else {
+            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+             $data['bool'] = false;
+        }
+        $data['browsers'] = $this->getBrowsers();
+
+        $this->load->view('view_compareBrowser',$data);
+    }
+
+    public function compareBrowsers(){
+
+        $selBrowsers =  $_POST['selBrowsers'];
+
+        print_r($selBrowsers);
+        $output = "Result of all test is \n";
+        foreach ($selBrowsers as $browser) {
+            $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@compare\'';
+            $result = shell_exec($command);
+            if(strpos($result, 'failed')== TRUE ){
+                $output = "Something went wrong with ".$command;
+                    break;
+            }
+           $output .= $command." is success \n";
+        }
+        $data['result']=$output;
+        $data['bool'] = true;
+        $data['command']="Demo";
+         $this->load->view('view_results',$data);
     }
 }
 
