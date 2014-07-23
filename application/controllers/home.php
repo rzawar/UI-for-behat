@@ -121,11 +121,11 @@ class Home extends CI_Controller{
     }
     public function testBaseFeature(){
 
-         $browser = "default browser";//$_POST['browserval'];
+         $browser = $_POST['browserval'];
         $result = "Not set yet";
         $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getBase\'';
 
-        $result = "rohit";//shell_exec($command);
+        $result = shell_exec($command);
         $data['browser'] = $browser;
         $data['command'] = $command;
 
@@ -146,7 +146,7 @@ class Home extends CI_Controller{
 
         $selBrowsers =  $_POST['selBrowsers'];
 
-        print_r($selBrowsers);
+       
         $output = "Result of all test is \n";
         foreach ($selBrowsers as $browser) {
             $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@compare\'';
@@ -157,7 +157,7 @@ class Home extends CI_Controller{
             }
            $output .= $command." is success \n";
         }
-        $data['result']=$output;
+        $data['result']=$output." <pre>".$result."</pre>";
         $data['bool'] = true;
         $data['command']="Demo";
          $this->load->view('view_results',$data);
