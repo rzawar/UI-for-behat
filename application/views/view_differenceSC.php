@@ -19,17 +19,18 @@
                          $function = 'http://localhost/unitTesting/application/screenshotCompare/';
                     else
                          $function = 'http://localhost/unitTesting/application/img/';
-                    foreach($images as $image){
-
-                        
-                        ?>
+                  
+                    ?>
 
 
 
-                    <div class="col-lg-3 col-sm-4 col-xs-6"><a title="Image 1" href="#">  <img src="<?php echo $function.$image; ?>" class="img-responsive img-thumbnail" style="min-height:200px;height:200px;" alt="Responsive image"><br><?php echo $image; ?></a></div>
-                    <?php } ?>
+                    <div class="col-lg-3 col-sm-4 col-xs-6"><a title="Image 1" href="#">  <img id="img1" src="<?php echo $function.$images[0]; ?>" class="img-responsive img-thumbnail" style="min-height:200px;height:200px;" alt="Responsive image"><br><?php echo $images[0]; ?></a></div>
+                    <div class="col-lg-3 col-sm-4 col-xs-6"><a title="Image 2" href="#">  <img id="img2" src="<?php echo $function.$images[1]; ?>" class="img-responsive img-thumbnail" style="min-height:200px;height:200px;" alt="Responsive image"><br><?php echo $images[1]; ?></a></div>
+                    
                 </div>
             </div>
+             <hr>
+             <button id ="buttonimg" class="btn btn-success"> Click for difference</button>
         </div>
         </div>
        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -50,6 +51,39 @@
     
      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
      <script type="text/javascript" src="<?= base_url().'../../../assests/js/bootstrap.min.js' ?>"></script>
+     <script src="<?= base_url().'../../../assests/resemble.js' ?>"></script>
+        <script>
+
+$(function(){
+
+function onComplete(data){
+var diffImage = new Image();
+diffImage.src = data.getImageDataUrl();
+//alert(diffImage.src);
+//$('#image-diff').html(diffImage);
+ $('#mimg').attr('src',diffImage.src);
+$('#myModal').modal('show');
+}
+
+resemble.outputSettings({
+  errorColor: {
+    red: 255,
+    green: 0,
+    blue: 255
+  },
+  errorType: 'movement',
+  largeImageThreshold: 1200
+});
+
+$('#buttonimg').click(function(){
+var img1 = document.getElementById("img1").src;
+var img2 = document.getElementById("img2").src;
+resembleControl = resemble(img1).compareTo(img2).onComplete(onComplete);
+});
+
+});
+
+        </script>
     <script  type="text/javascript">
         $(window).load(function(){           
              $('img').on('click',function()

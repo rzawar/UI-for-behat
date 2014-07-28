@@ -12,6 +12,7 @@
         <li class="active"><a href="#create" role="tab" data-toggle="tab">Create Feature</a></li>
         <li><a href="#run" role="tab" data-toggle="tab">Run Feature</a></li>
         <li><a href="#compare" role="tab" data-toggle="tab">Compare</a></li>
+        <li><a href="#compareSC" role="tab" data-toggle="tab">Compare Screenshot</a></li>
     </ul>
 
 <div class="tab-content">
@@ -187,6 +188,54 @@
 
              
     
+
+       </div>
+    </div>
+  </div>
+
+
+    <div class="tab-pane" id="compareSC">
+    <div class="row">
+       <div class="col-md-6 col-md-offset-3">
+           <h2>Compare with the base browser</h2>
+           <hr>
+
+
+
+                   <form class="form-horizontal" role="form" action="<?= base_url().'home/testBaseFeatureForSC';?>" method="post">
+
+                                  <div class ="form-group">
+                                      <div class="col-lg-6">
+                                        <button type="button" class="btn-lg btn-danger dropdown-toggle browserbtn" data-toggle="dropdown">
+                                            Set the base browser &nbsp;
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                         </button>
+                                         <ul class="dropdown-menu" role="menu">
+                                             <?php
+                                             foreach ($browsers as $browser) {
+
+                                             if($browser != ""){
+                                            echo "<li><a>$browser</a></li>";
+                                            echo "<li class=\"divider\"></li>";
+                                             }
+                                              } ?>
+                                         </ul>
+
+                                            <hr>
+                                      <input type="text" class ="form-control browser" id="browserval" name="browserval" value="Windows8_FF" readonly>
+
+                                      </div>
+                                  </div>
+				  <div class="form-group">
+				    <div class="col-lg-offset-0 col-lg-10">
+				      <button type="submit" class="btn-lg btn-success">Create Base Case</button>
+				    </div>
+				  </div>
+				</form>
+
+
+
 
        </div>
     </div>

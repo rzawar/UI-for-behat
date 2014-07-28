@@ -111,7 +111,14 @@ class Home extends CI_Controller{
     public function checkDifference(){
         $images = directory_map('./application/img');
         $data['images']= $images;
+        $data['isCompare']= false;
         $this->load->view('view_difference',$data);
+    }
+    public function checkDifferenceSC(){
+        $images = directory_map('./application/screenshotCompare');
+        $data['images']= $images;
+        $data['isCompare']= true;
+        $this->load->view('view_differenceSC',$data);
     }
     public function getBrowsers(){
 
@@ -160,6 +167,50 @@ class Home extends CI_Controller{
         $data['result']=$output." <pre>".$result."</pre>";
         $data['bool'] = true;
         $data['command']="Demo";
+        $data['isCompare']= false;
+         $this->load->view('view_results',$data);
+    }
+     public function testBaseFeatureForSC(){
+
+         $browser = $_POST['browserval'];
+        $result = "Not set yet";
+        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getScreenshot\'';
+
+        $result = shell_exec($command);
+        $data['browser'] = $browser;
+        $data['command'] = $command;
+
+        if(strpos($result, 'failed')== FALSE ){
+                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
+                $data['bool'] = true;
+        }
+        else {
+            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+             $data['bool'] = false;
+        }
+        $data['browsers'] = $this->getBrowsers();
+
+        $this->load->view('view_compareBrowserSC',$data);
+    }
+     public function compareBrowsersSC(){
+
+        $selBrowsers =  $_POST['selBrowsers'];
+
+
+        $output = "Result of all test is \n";
+        foreach ($selBrowsers as $browser) {
+            $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getScreenshot\'';
+            $result = shell_exec($command);
+            if(strpos($result, 'failed')== TRUE ){
+                $output = "Something went wrong with ".$command;
+                    break;
+            }
+           $output .= $command." is success \n";
+        }
+        $data['result']=$output." <pre>".$result."</pre>";
+        $data['bool'] = true;
+        $data['command']="Demo";
+        $data['isCompare'] = true;
          $this->load->view('view_results',$data);
     }
 }
