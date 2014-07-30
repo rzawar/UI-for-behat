@@ -39,6 +39,24 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              <div class="btn-group buttons" style="display:none">
+		<button class="btn btn-success active" id="raw">Ignore nothing</button>
+		<button class="btn" id="colors">Ignore colors</button>
+		
+	      </div>
+              <hr>
+              <div class="btn-group buttons" style="display:none">
+		<button class="btn btn-danger active" id="pink">Pink</button>
+		<button class="btn btn-warning" id="yellow">Yellow</button>
+	      </div>
+              <div class="btn-group buttons" style="display:none">
+		<button class="btn active" id="flat" >Flat</button>
+		<button class="btn btn-primary" id="movement">Movement</button>
+	      </div>
+              <div class="btn-group buttons" style="display:none">
+		<button class="btn btn-info active" id="opaque">Opaque</button>
+		<button class="btn" id="transparent">Transparent</button>
+	      </div>
             </div>
           <div class="modal-body">
             <img id="mimg" src="" style="min-width:800px; width:800px;">
@@ -63,7 +81,75 @@ diffImage.src = data.getImageDataUrl();
 //$('#image-diff').html(diffImage);
  $('#mimg').attr('src',diffImage.src);
 $('#myModal').modal('show');
+$('.buttons').show();
 }
+
+var buttons = $('.buttons button');
+
+	buttons.click(function(){
+		var $this = $(this);
+
+		$this.parent('.buttons').find('button').removeClass('active');
+		$this.addClass('active');
+
+		if($this.is('#raw')){
+			resembleControl.ignoreNothing();
+		}
+		else
+		if($this.is('#colors')){
+			resembleControl.ignoreColors();
+		}
+		else
+		if($this.is('#pink')){
+			resemble.outputSettings({
+				errorColor: {
+					red: 255,
+					green: 0,
+					blue: 255
+				}
+			});
+			resembleControl.repaint();
+		}
+		else
+		if($this.is('#yellow')){
+			resemble.outputSettings({
+				errorColor: {
+					red: 255,
+					green: 255,
+					blue: 0
+				}
+			});
+			resembleControl.repaint();
+		}
+		else
+		if($this.is('#flat')){
+			resemble.outputSettings({
+				errorType: 'flat'
+			});
+			resembleControl.repaint();
+                        }
+		else
+		if($this.is('#movement')){
+			resemble.outputSettings({
+				errorType: 'movement'
+			});
+			resembleControl.repaint();
+		}
+		else
+		if($this.is('#opaque')){
+			resemble.outputSettings({
+				transparency: 1
+			});
+			resembleControl.repaint();
+		}
+		else
+		if($this.is('#transparent')){
+			resemble.outputSettings({
+				transparency: 0.3
+			});
+			resembleControl.repaint();
+		}
+	});
 
 resemble.outputSettings({
   errorColor: {

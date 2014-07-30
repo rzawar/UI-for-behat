@@ -21,13 +21,7 @@
                 else
                     echo '<div class="alert alert-Danger" role="alert">Something went wrong . go back and try again</div>';
             ?></h3>
-            <form class="form-horizontal" role="form" action="<?= base_url().'../checkDifference';?>" method="post">
-				  <div class="form-group">
-				    <div class="col-lg-offset-0 col-lg-10">
-				      <button type="submit" class="btn btn-success">Check the Difference</button>
-				    </div>
-				  </div>
-				</form>
+           
              </div>
              <div class =" col-md-6">
                  <h3>Select the browser to run your tests on</h3> <hr>
