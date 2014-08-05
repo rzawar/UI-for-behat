@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 	<title>Welcome to unit testing</title>
 </head>
@@ -206,6 +207,7 @@
 
                                   <div class ="form-group">
                                       <div class="col-lg-6">
+                                          <div class="btn-group">
                                         <button type="button" class="btn-lg btn-danger dropdown-toggle browserbtn" data-toggle="dropdown">
                                             Set the base browser &nbsp;
                                             <span class="caret"></span>
@@ -221,22 +223,19 @@
                                              }
                                               } ?>
                                          </ul>
-
+                                          </div>
                                             <hr>
                                       <input type="text" class ="form-control browser" id="browserval" name="browserval" value="Windows8_FF" readonly>
+                                       <input type='hidden' id="isEdit" name='isEdit' value='false' />
+                                      <hr>
+                                      <textarea id="featuretextarea1" class="form-control" rows="18" cols="15" name="featuretextarea" readonly><?= $contents; ?></textarea>
+                                      <hr>
+                                            <a id="editbutton1" class="btn btn-primary">Edit</a>&nbsp;&nbsp;
+                                         <button type="submit" class="btn-lg btn-success">Create Base Case</button>
 
                                       </div>
-                                  </div>
-				  <div class="form-group">
-				    <div class="col-lg-offset-0 col-lg-10">
-				      <button type="submit" class="btn-lg btn-success">Create Base Case</button>
-				    </div>
-				  </div>
+                                  </div>		  
 				</form>
-
-
-
-
        </div>
     </div>
   </div>
@@ -271,6 +270,12 @@
    
     //$(".browser").text(yourText);
 
+});
+$("#editbutton1").click(function(){
+    $("#featuretextarea1").attr("readonly",false);
+    $('#isEdit').attr("value","true");
+
+    
 });
 
 </script>

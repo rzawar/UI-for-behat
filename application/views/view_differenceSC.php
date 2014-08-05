@@ -38,7 +38,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              <h4 class="modal-title" id="myModalLabel"><div style="display:none" id="modal-title"><strong>Difference percentage is <span id="percentage"<></span> %</strong></div></h4>
               <div class="btn-group buttons" style="display:none">
 		<button class="btn btn-success active" id="raw">Ignore nothing</button>
 		<button class="btn" id="colors">Ignore colors</button>
@@ -57,6 +57,7 @@
 		<button class="btn btn-info active" id="opaque">Opaque</button>
 		<button class="btn" id="transparent">Transparent</button>
 	      </div>
+             
             </div>
           <div class="modal-body">
             <img id="mimg" src="" style="min-width:800px; width:800px;">
@@ -79,9 +80,11 @@ var diffImage = new Image();
 diffImage.src = data.getImageDataUrl();
 //alert(diffImage.src);
 //$('#image-diff').html(diffImage);
+$('#percentage').text(data.misMatchPercentage);
  $('#mimg').attr('src',diffImage.src);
 $('#myModal').modal('show');
 $('.buttons').show();
+$('#modal-title').show();
 }
 
 var buttons = $('.buttons button');
@@ -165,6 +168,14 @@ $('#buttonimg').click(function(){
 var img1 = document.getElementById("img1").src;
 var img2 = document.getElementById("img2").src;
 resembleControl = resemble(img1).compareTo(img2).onComplete(onComplete);
+});
+
+$('#myModal').on('hidden.bs.modal', function (e){
+   
+   $('.buttons').hide();
+$('#modal-title').hide();
+
+
 });
 
 });

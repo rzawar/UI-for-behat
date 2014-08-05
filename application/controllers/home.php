@@ -7,6 +7,13 @@
  */
 class Home extends CI_Controller{
 
+    
+
+    public function __construct() {
+        parent::__construct();
+        
+    }
+
     public function index(){
 
         $this->runTest();
@@ -39,7 +46,14 @@ class Home extends CI_Controller{
          $data['features']=$arr;
          //$this->load->view('view_displayFeatures',$data);
        }
-       $data['browsers']= $this->getBrowsers();
+
+        $dir = '../../../altests/features/';
+        $dirFeatur = '../../../altests/';
+        $resource = fopen($dir."screenshotFeature.feature", "r");
+        $contents = fread($resource, filesize($dir."screenshotFeature.feature"));
+        $data['contents'] = $contents;
+
+        $data['browsers']= $this->getBrowsers();
         $this->load->view('view_homePage',$data);
 
     }
@@ -97,6 +111,13 @@ class Home extends CI_Controller{
         $data['browser'] = $browser;
         $data['command'] = $command;
 
+        if($result == ""){
+           $data['result'] = "Failure!!! returned empty check command line";
+            $data['bool'] = false;
+        }
+        else{
+
+
         if(strpos($result, 'failed')== FALSE ){
                 $data['result'] = "Success<br><hr><pre>".$result."</pre>";
                 $data['bool'] = true;
@@ -106,6 +127,9 @@ class Home extends CI_Controller{
              $data['bool'] = false;
         }
 
+        }
+        $data['isCompare'] = false;
+        $data['isFeature']= true;
         $this->load->view('view_results',$data);
     }
     public function checkDifference(){
@@ -115,6 +139,7 @@ class Home extends CI_Controller{
         $this->load->view('view_difference',$data);
     }
     public function checkDifferenceSC(){
+        
         $images = directory_map('./application/screenshotCompare');
         $data['images']= $images;
         $data['isCompare']= true;
@@ -129,12 +154,20 @@ class Home extends CI_Controller{
     public function testBaseFeature(){
 
          $browser = $_POST['browserval'];
+     
+       
         $result = "Not set yet";
         $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getBase\'';
 
         $result = shell_exec($command);
         $data['browser'] = $browser;
         $data['command'] = $command;
+        if($result == ""){
+            $data['result'] = "Failure!!! returned empty check command line";
+            $data['bool'] = false;
+        }
+        else{
+
 
         if(strpos($result, 'failed')== FALSE ){
                 $data['result'] = "Success<br><hr><pre>".$result."</pre>";
@@ -144,8 +177,9 @@ class Home extends CI_Controller{
             $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
              $data['bool'] = false;
         }
+    }
         $data['browsers'] = $this->getBrowsers();
-
+  
         $this->load->view('view_compareBrowser',$data);
     }
 
@@ -153,7 +187,7 @@ class Home extends CI_Controller{
 
         $selBrowsers =  $_POST['selBrowsers'];
 
-       
+      
         $output = "Result of all test is \n";
         foreach ($selBrowsers as $browser) {
             $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@compare\'';
@@ -168,17 +202,32 @@ class Home extends CI_Controller{
         $data['bool'] = true;
         $data['command']="Demo";
         $data['isCompare']= false;
-         $this->load->view('view_results',$data);
+         $data['isFeature']= false;
+        $this->load->view('view_results',$data);
     }
      public function testBaseFeatureForSC(){
 
          $browser = $_POST['browserval'];
+           $isEdit = $_POST['isEdit'];
+          if($isEdit == "true"){
+
+              echo "ksdfnklasdnfkjlnsdfkINIFsdklfns";
+               $contents = $_POST['featuretextarea'];
+               file_put_contents('../../../altests/features/screenshotFeature.feature', $contents);
+       
+          }
         $result = "Not set yet";
         $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getScreenshot\'';
 
         $result = shell_exec($command);
         $data['browser'] = $browser;
         $data['command'] = $command;
+
+        if($result == ""){
+            $data['result'] = "Failure!!! returned empty check command line";
+            $data['bool'] = false;
+        }
+        else{
 
         if(strpos($result, 'failed')== FALSE ){
                 $data['result'] = "Success<br><hr><pre>".$result."</pre>";
@@ -187,6 +236,7 @@ class Home extends CI_Controller{
         else {
             $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
              $data['bool'] = false;
+        }
         }
         $data['browsers'] = $this->getBrowsers();
 
@@ -211,8 +261,20 @@ class Home extends CI_Controller{
         $data['bool'] = true;
         $data['command']="Demo";
         $data['isCompare'] = true;
+         $data['isFeature']= false;
          $this->load->view('view_results',$data);
     }
+
+    public function changefeature(){
+
+        $contents = $_POST['featuretextarea'];
+       
+        
+       file_put_contents('../../../altests/features/screenshotFeature.feature', $contents);
+        $this->index();
+
+    }
+   
 }
 
 ?>
