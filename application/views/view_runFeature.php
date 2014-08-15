@@ -47,7 +47,7 @@ echo form_close();
                                              <?php foreach ($browsers as $browser) {
 
                                              if($browser != ""){
-                                            echo "<li><a>$browser</a></li>";
+                                            echo "<li><a class=\"browsersDD\">$browser</a></li>";
                                             echo "<li class=\"divider\"></li>";
                                              }
                                               } ?>
@@ -57,6 +57,29 @@ echo form_close();
                                       </div>
                                       </div>
                                   </div>
+
+                                  <div class ="form-group">
+                                      <div class="col-lg-6">
+                                     <div class ="input-group" >
+                                      <div class="input-group-btn">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                            Select the Box &nbsp;
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                         </button>
+                                         <ul class="dropdown-menu" role="menu">
+                                             <li><a class ="server">Development</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="server">Production</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="server">Staging</a></li>
+                                         </ul>
+                                        </div>
+                                      <input type="text" class ="form-control browser" id="serverval" name="serverval" value="Development" readonly>
+                                      </div>
+                                      </div>
+                                  </div>
+
 				  <div class="form-group">
 				    <div class="col-lg-offset-0 col-lg-10">
 				      <button type="submit" class="btn btn-success">Test</button> <a href="<?= '../';?>" class="btn btn-primary">Cancel</a>
@@ -73,11 +96,18 @@ echo form_close();
 <script type="text/javascript" src="<?= base_url().'../../../assests/js/bootstrap.min.js'?>"></script>
 
 <script>
-    $(".dropdown-menu li a").click( function() {
+    $(".browsersDD").click( function() {
     var yourText = $(this).text();
-    $(".browser").val(yourText);
+    $("#browserval").val(yourText);
     //$(".browser").text(yourText);
     
+});
+
+$(".server").click( function() {
+    var yourText = $(this).text();
+    $("#serverval").val(yourText);
+    //$(".browser").text(yourText);
+
 });
 
 </script>

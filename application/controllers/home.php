@@ -8,9 +8,12 @@
 class Home extends CI_Controller{
 
     
-
-    public function __construct() {
+    protected $_baseBrowser;
+    protected $_testBrowsers;
+    public function home() {
         parent::__construct();
+
+       
         
     }
 
@@ -51,7 +54,15 @@ class Home extends CI_Controller{
         $dirFeatur = '../../../altests/';
         $resource = fopen($dir."screenshotFeature.feature", "r");
         $contents = fread($resource, filesize($dir."screenshotFeature.feature"));
-        $data['contents'] = $contents;
+        $data['contentsSC'] = $contents;
+
+        $resource1 = fopen($dir."getBase.feature", "r");
+        $contents1 = fread($resource1, filesize($dir."getBase.feature"));
+        $data['contents'] = $contents1;
+
+        $resourcebehat = fopen("../../../altests/behat.yml", "r");
+        $contentsbehat = fread($resourcebehat, filesize("../../../altests/behat.yml"));
+        $data['contentsBehat'] = $contentsbehat;
 
         $data['browsers']= $this->getBrowsers();
         $this->load->view('view_homePage',$data);
@@ -103,10 +114,27 @@ class Home extends CI_Controller{
     public function testFeature(){
 
         $tag =  $_POST['data'];
+        $server = $_POST['serverval'];       
         $browser = $_POST['browserval'];
-        $result = "Not set yet";
-        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \''.$tag.'\'';
       
+        $result = "Not set yet";
+        /*switch ($server) {
+            case "Development":
+                $url = "http://angiesmr2dev.prod.acquia-sites.com/";
+                break;
+            case "Production":
+                $url = "http://angiesmr2.prod.acquia-sites.com/";
+                break;
+            case "Staging":
+                $url = "http://angiesmr2stg.prod.acquia-sites.com/";
+                break;
+            default:
+                break;
+        }*/
+        $setServer = $this->getServerURL($server);
+        $command = 'cd ../../../altests &&'.$setServer.'&& behat -p \''.$browser.'\' --tags \''.$tag.'\'';
+        //$isServerSet =  shell_exec($setServer);
+        
         $result = shell_exec($command);
         $data['browser'] = $browser;
         $data['command'] = $command;
@@ -115,27 +143,32 @@ class Home extends CI_Controller{
            $data['result'] = "Failure!!! returned empty check command line";
             $data['bool'] = false;
         }
-        else{
-
-
-        if(strpos($result, 'failed')== FALSE ){
-                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
-                $data['bool'] = true;
-        }
-        else {
-            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
-             $data['bool'] = false;
-        }
-
-        }
+        else  if(strpos($result,'You can implement step definitions for undefined steps with these snippets:')== TRUE){
+                    $data['result'] = "Failure!!! returned empty check command line , Check your feature file";
+                    $data['bool'] = false;
+                }
+                else if(strpos($result, 'failed')== FALSE ){
+                            $data['result'] = "Success<br><hr><pre>".$result."</pre>";
+                            $data['bool'] = true;
+                     }
+                     else {
+                            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+                            $data['bool'] = false;
+                     }
         $data['isCompare'] = false;
         $data['isFeature']= true;
         $this->load->view('view_results',$data);
+        
     }
     public function checkDifference(){
+      
         $images = directory_map('./application/img');
         $data['images']= $images;
         $data['isCompare']= false;
+        $data['baseBrowser'] = $this->session->userdata('baseBrowser');
+        $data['testBrowsers'] = implode(" , ",$this->session->userdata('testBrowsers'));
+        $data['baseServer'] = $this->session->userdata('baseServer');
+        $data['testServer'] = $this->session->userdata('testServer');
         $this->load->view('view_difference',$data);
     }
     public function checkDifferenceSC(){
@@ -143,6 +176,10 @@ class Home extends CI_Controller{
         $images = directory_map('./application/screenshotCompare');
         $data['images']= $images;
         $data['isCompare']= true;
+        $data['baseBrowserSC'] = $this->session->userdata('baseBrowserSC');
+        $data['testBrowsersSC'] = $this->session->userdata('testBrowsersSC');
+        $data['baseServerSC'] = $this->session->userdata('baseServerSC');
+        $data['testServerSC'] = $this->session->userdata('testServerSC');
         $this->load->view('view_differenceSC',$data);
     }
     public function getBrowsers(){
@@ -154,52 +191,73 @@ class Home extends CI_Controller{
     public function testBaseFeature(){
 
          $browser = $_POST['browserval'];
-     
-       
-        $result = "Not set yet";
-        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getBase\'';
+         $this->session->set_userdata('baseBrowser', $browser);
+          $isEdit = $_POST['isEdit2'];
+          if($isEdit == "true"){
 
+
+               $contents = $_POST['featuretextarea2'];
+               file_put_contents('../../../altests/features/getBase.feature', $contents);
+
+          }
+
+        $result = "Not set yet";
+        $server = $_POST['serverval'];
+        $this->session->set_userdata('baseServer', $server);
+        $setServer = $this->getServerURL($server);
+        $command = 'cd ../../../altests &&'.$setServer.'&& behat -p \''.$browser.'\' --tags \'@getBase\'';
+        
         $result = shell_exec($command);
         $data['browser'] = $browser;
         $data['command'] = $command;
         if($result == ""){
-            $data['result'] = "Failure!!! returned empty check command line";
+            $data['result'] = "Failure!!! returned empty check command line. Probably some exception";
             $data['bool'] = false;
         }
-        else{
-
-
-        if(strpos($result, 'failed')== FALSE ){
-                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
-                $data['bool'] = true;
-        }
-        else {
-            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
-             $data['bool'] = false;
-        }
-    }
+        else if(strpos($result,'You can implement step definitions for undefined steps with these snippets:')== TRUE){
+                    $data['result'] = "Failure!!! returned empty check command line , Check your feature file";
+                    $data['bool'] = false;
+              }
+             else if(strpos($result,'No scenarios')== TRUE){
+                         $data['result'] = "Failure!!! returned empty check command line , Check your tags of feature file or probably feature file is empty";
+                         $data['bool'] = false;
+                   }
+                   else if(strpos($result, 'failed')== FALSE ){
+                                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
+                                $data['bool'] = true;
+                   }
+                        else {
+                                $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+                                $data['bool'] = false;
+                              }
+    
         $data['browsers'] = $this->getBrowsers();
-  
+        $data['isEdit'] = $isEdit;
         $this->load->view('view_compareBrowser',$data);
+       
     }
 
     public function compareBrowsers(){
 
         $selBrowsers =  $_POST['selBrowsers'];
-
-      
+        $this->session->set_userdata('testBrowsers', $selBrowsers);
+        $server= $_POST['serverval'];
+         $this->session->set_userdata('testServer', $server);
+        $setServer = $this->getServerURL($server);
         $output = "Result of all test is \n";
+        $data['bool'] = true;
         foreach ($selBrowsers as $browser) {
-            $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@compare\'';
+            $command = 'cd ../../../altests &&'.$setServer.' &&behat -p \''.$browser.'\' --tags \'@compare\'';
             $result = shell_exec($command);
             if(strpos($result, 'failed')== TRUE ){
                 $output = "Something went wrong with ".$command;
+                 $data['bool'] = false;
                     break;
             }
            $output .= $command." is success \n";
         }
         $data['result']=$output." <pre>".$result."</pre>";
-        $data['bool'] = true;
+       
         $data['command']="Demo";
         $data['isCompare']= false;
          $data['isFeature']= false;
@@ -207,17 +265,20 @@ class Home extends CI_Controller{
     }
      public function testBaseFeatureForSC(){
 
-         $browser = $_POST['browserval'];
-           $isEdit = $_POST['isEdit'];
-          if($isEdit == "true"){
-
-              echo "ksdfnklasdnfkjlnsdfkINIFsdklfns";
-               $contents = $_POST['featuretextarea'];
+           $browser = $_POST['browserval'];
+           $this->session->set_userdata('baseBrowserSC', $browser);
+          
+           $isEdit = $_POST['isEdit1'];
+           $server = $_POST['servervalSC'];
+            $this->session->set_userdata('baseServerSC', $server);
+          if($isEdit == "true"){           
+               $contents = $_POST['featuretextarea1'];
                file_put_contents('../../../altests/features/screenshotFeature.feature', $contents);
        
           }
         $result = "Not set yet";
-        $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getScreenshot\'';
+        $serveSet = $this->getServerURL($server);
+        $command = 'cd ../../../altests &&'.$serveSet.'&&behat -p \''.$browser.'\' --tags \'@getScreenshotBase\'';
 
         $result = shell_exec($command);
         $data['browser'] = $browser;
@@ -227,39 +288,52 @@ class Home extends CI_Controller{
             $data['result'] = "Failure!!! returned empty check command line";
             $data['bool'] = false;
         }
-        else{
+        else if(strpos($result,'You can implement step definitions for undefined steps with these snippets:')== TRUE){
+                    $data['result'] = "Failure!!! returned empty check command line , Check your feature file";
+                    $data['bool'] = false;
+              }
+             else if(strpos($result,'No scenarios')== TRUE){
+                          $data['result'] = "Failure!!! returned empty check command line , Check your tags of feature file or probably feature file is empty";
+                          $data['bool'] = false;
 
-        if(strpos($result, 'failed')== FALSE ){
-                $data['result'] = "Success<br><hr><pre>".$result."</pre>";
-                $data['bool'] = true;
-        }
-        else {
-            $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
-             $data['bool'] = false;
-        }
-        }
+                     }
+                   else  if(strpos($result, 'failed')== FALSE ){
+                                    $data['result'] = "Success<br><hr><pre>".$result."</pre>";
+                                    $data['bool'] = true;
+                             }
+                           else {
+                                    $data['result'] = "Failure!!!".'<br><hr><pre>'.$result.'<pre>';
+                                    $data['bool'] = false;
+                              }
+        
         $data['browsers'] = $this->getBrowsers();
 
         $this->load->view('view_compareBrowserSC',$data);
     }
      public function compareBrowsersSC(){
-
+       
         $selBrowsers =  $_POST['selBrowsers'];
-
-
+       
+        $this->session->set_userdata('testBrowsersSC', $selBrowsers);
+        $server = $_POST['serverval'];
+         $this->session->set_userdata('testServerSC', $server);
+        $setServer = $this->getServerURL($server);
         $output = "Result of all test is \n";
-        foreach ($selBrowsers as $browser) {
-            $command = 'cd ../../../altests && behat -p \''.$browser.'\' --tags \'@getScreenshot\'';
+         $data['bool'] = true;
+        
+            $command = 'cd ../../../altests &&'.$setServer.' &&behat -p \''.$selBrowsers.'\' --tags \'@getScreenshotTest\'';
             $result = shell_exec($command);
             if(strpos($result, 'failed')== TRUE ){
                 $output = "Something went wrong with ".$command;
-                    break;
+                 $data['bool'] = false;
+                    
             }
+            else
            $output .= $command." is success \n";
-        }
+        
         $data['result']=$output." <pre>".$result."</pre>";
-        $data['bool'] = true;
-        $data['command']="Demo";
+       
+        $data['command']=$command;
         $data['isCompare'] = true;
          $data['isFeature']= false;
          $this->load->view('view_results',$data);
@@ -273,6 +347,28 @@ class Home extends CI_Controller{
        file_put_contents('../../../altests/features/screenshotFeature.feature', $contents);
         $this->index();
 
+    }
+    public function addBrowser(){
+
+        $this->index();
+    }
+    public function getServerURL($server){
+
+        switch ($server) {
+            case "Development":
+                $url = "http://angiesmr2dev.prod.acquia-sites.com/";
+                break;
+            case "Production":
+                $url = "http://angiesmr2.prod.acquia-sites.com/";
+                break;
+            case "Staging":
+                $url = "http://angiesmr2stg.prod.acquia-sites.com/";
+                break;
+            default:
+                break;
+        }
+        $setServer = " export BEHAT_PARAMS=\"extensions[Behat\MinkExtension\Extension][base_url]=".$url."\"";
+        return $setServer;
     }
    
 }

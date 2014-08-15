@@ -9,7 +9,7 @@
     <body>
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
-         <h1>Results for the Browser comparison</h1>
+         <h1>Results :</h1>
         <div class="alert alert-warning" role="alert">Executing command <?php echo $command ;?>  </div>
         <h3><?php
                 if($isCompare)

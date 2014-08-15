@@ -9,8 +9,22 @@
     <body>
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
-             <h1>Welcome to Unit testing</h1>
-             
+            <hr>
+            <div class="alert alert-success" role="alert">
+                <h1> Test suite Configuration: </h1>
+                <p>
+                <strong>Base Case</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Base Browser : <?= $baseBrowserSC;?><br>
+                 &nbsp;&nbsp;&nbsp;&nbsp;Server Box : <?= $baseServerSC;?><br>
+                </p>
+                <hr>
+                <p>
+                <strong>Test Case</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Test Browsers : <?= $testBrowsersSC;?><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Server Box : <?= $testServerSC;?><br>
+                </p>
+            </div>
+
              <hr>
             <div class="row">
                 <div class="row">

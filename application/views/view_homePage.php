@@ -14,6 +14,7 @@
         <li><a href="#run" role="tab" data-toggle="tab">Run Feature</a></li>
         <li><a href="#compare" role="tab" data-toggle="tab">Compare</a></li>
         <li><a href="#compareSC" role="tab" data-toggle="tab">Compare Screenshot</a></li>
+        <li><a href="#browserConfig" role="tab" data-toggle="tab">Configure browsers</a></li>
     </ul>
 
 <div class="tab-content">
@@ -115,7 +116,7 @@
      
      <div class="row">
     <div class="col-md-6 col-md-offset-3">
-    <h2>Run existing feature files</h2>
+    <h2 class ="text-center">Run existing feature files</h2>
     <div class="list-group">
         <?php
         $dir = '../../../../../altests/features/';
@@ -159,6 +160,7 @@
 				 
                                   <div class ="form-group">
                                       <div class="col-lg-6">
+                                          <div class="btn-group">
                                         <button type="button" class="btn-lg btn-danger dropdown-toggle browserbtn" data-toggle="dropdown">
                                             Set the base browser &nbsp;
                                             <span class="caret"></span>
@@ -169,22 +171,45 @@
                                              foreach ($browsers as $browser) {
                                              
                                              if($browser != ""){
-                                            echo "<li><a>$browser</a></li>";
+                                            echo "<li><a class=\"browsersDD\">$browser</a></li>";
                                             echo "<li class=\"divider\"></li>";
                                              }
                                               } ?>
                                          </ul>
-                                       
+                                          </div>
+                                        
                                             <hr>
                                       <input type="text" class ="form-control browser" id="browserval" name="browserval" value="Windows8_FF" readonly>
-                                    
+                                        <hr>
+                                          <div class ="input-group" >
+                                      <div class="input-group-btn">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                            Select the Box &nbsp;
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                         </button>
+                                         <ul class="dropdown-menu" role="menu">
+                                             <li><a class ="server">Development</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="server">Production</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="server">Staging</a></li>
+                                         </ul>
+                                        </div>
+                                      <input type="text" class ="form-control browser" id="serverval" name="serverval" value="Development" readonly>
                                       </div>
-                                  </div>
-				  <div class="form-group">
-				    <div class="col-lg-offset-0 col-lg-10">
+                                       <input type='hidden' id="isEdit2" name='isEdit2' value='false' />
+                                      <hr>
+                                      <textarea id="featuretextarea2" class="form-control" rows="18" cols="15" name="featuretextarea2" readonly><?= $contents; ?></textarea>
+                                      <hr>
+                                      
+				 
+                                         <a id="editbutton2" class="btn btn-primary">Edit</a>&nbsp;&nbsp;
 				      <button type="submit" class="btn-lg btn-success">Create Base Case</button>
-				    </div>
-				  </div>
+				    
+				 </div>
+                                  </div>
+
 				</form>
 
              
@@ -198,7 +223,7 @@
     <div class="tab-pane" id="compareSC">
     <div class="row">
        <div class="col-md-6 col-md-offset-3">
-           <h2>Compare with the base browser</h2>
+           <h2>Compare with the base browser for Screen shot comparison</h2>
            <hr>
 
 
@@ -218,17 +243,36 @@
                                              foreach ($browsers as $browser) {
 
                                              if($browser != ""){
-                                            echo "<li><a>$browser</a></li>";
+                                            echo "<li><a class=\"browsersDDSC\">$browser</a></li>";
                                             echo "<li class=\"divider\"></li>";
                                              }
                                               } ?>
                                          </ul>
                                           </div>
-                                            <hr>
-                                      <input type="text" class ="form-control browser" id="browserval" name="browserval" value="Windows8_FF" readonly>
-                                       <input type='hidden' id="isEdit" name='isEdit' value='false' />
+                                          <hr>
+                                         
+                                      <input type="text" class ="form-control browser" id="browservalSC" name="browserval" value="Windows8_FF" readonly>
                                       <hr>
-                                      <textarea id="featuretextarea1" class="form-control" rows="18" cols="15" name="featuretextarea" readonly><?= $contents; ?></textarea>
+                                      <div class ="input-group" >
+                                      <div class="input-group-btn">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                            Select the Box &nbsp;
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                         </button>
+                                         <ul class="dropdown-menu" role="menu">
+                                             <li><a class ="serverSC">Development</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="serverSC">Production</a></li>
+                                             <li class ="divider"></li>
+                                             <li><a class ="serverSC">Staging</a></li>
+                                         </ul>
+                                        </div>
+                                      <input type="text" class ="form-control browser" id="servervalSC" name="servervalSC" value="Development" readonly>
+                                      </div>
+                                      <input type='hidden' id="isEdit1" name='isEdit1' value='false' />
+                                      <hr>
+                                      <textarea id="featuretextarea1" class="form-control" rows="18" cols="15" name="featuretextarea1" readonly><?= $contentsSC; ?></textarea>
                                       <hr>
                                             <a id="editbutton1" class="btn btn-primary">Edit</a>&nbsp;&nbsp;
                                          <button type="submit" class="btn-lg btn-success">Create Base Case</button>
@@ -239,6 +283,23 @@
        </div>
     </div>
   </div>
+    <div class="tab-pane" id="browserConfig">
+        <h1 class ="text-center">Configure browser</h1>
+        <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <a class ="btn btn-danger" id ="addBrowser">Add browser</a>
+            <hr>
+           
+        <form class="form-horizontal" role="form" action="<?= base_url().'home/addBrowser';?>" method="post">
+            <div class ="form-group">
+                <textarea id="browserconfigtextarea" class="form-control" rows="18" cols="10" name="browserconfig" readonly><?= $contentsBehat; ?></textarea>
+                <hr>
+		<button type="submit" class="btn-lg btn-success" id="saveBrowser" style="display:none">Save changes</button>
+            </div>
+	</form>
+    </div>
+    </div>
+    </div>
 
 </div>
 </div>
@@ -264,18 +325,54 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script>
-    $(".dropdown-menu li a").click( function() {
+    $(".browsersDD").click( function() {
     var yourText = $(this).text();
-    $(".browser").val(yourText);
+    $("#browserval").val(yourText);
    
+    //$(".browser").text(yourText);
+
+});
+  $(".browsersDDSC").click( function() {
+    var yourText = $(this).text();
+    $("#browservalSC").val(yourText);
+
     //$(".browser").text(yourText);
 
 });
 $("#editbutton1").click(function(){
     $("#featuretextarea1").attr("readonly",false);
-    $('#isEdit').attr("value","true");
+    $('#isEdit1').attr("value","true");
 
     
+});
+
+$("#editbutton2").click(function(){
+    $("#featuretextarea2").attr("readonly",false);
+    $('#isEdit2').attr("value","true");
+
+
+});
+
+
+$("#addBrowser").click(function(){
+    $("#browserconfigtextarea").attr("readonly",false);
+    document.getElementById('saveBrowser').style.display = "block";
+
+
+});
+
+$(".server").click( function() {
+    var yourText = $(this).text();
+    $("#serverval").val(yourText);
+    //$(".browser").text(yourText);
+
+});
+
+$(".serverSC").click( function() {
+    var yourText = $(this).text();
+    $("#servervalSC").val(yourText);
+    //$(".browser").text(yourText);
+
 });
 
 </script>
