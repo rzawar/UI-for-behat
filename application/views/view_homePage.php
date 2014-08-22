@@ -14,7 +14,7 @@
         <li><a href="#run" role="tab" data-toggle="tab">Run Feature</a></li>
         <li><a href="#compare" role="tab" data-toggle="tab">Compare</a></li>
         <li><a href="#compareSC" role="tab" data-toggle="tab">Compare Screenshot</a></li>
-        <li><a href="#browserConfig" role="tab" data-toggle="tab">Configure browsers</a></li>
+        
     </ul>
 
 <div class="tab-content">

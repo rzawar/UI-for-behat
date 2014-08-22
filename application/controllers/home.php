@@ -195,9 +195,12 @@ class Home extends CI_Controller{
           $isEdit = $_POST['isEdit2'];
           if($isEdit == "true"){
 
-
                $contents = $_POST['featuretextarea2'];
                file_put_contents('../../../altests/features/getBase.feature', $contents);
+               $resource = fopen("../../../altests/features/compare.feature", "r");
+               $testFeature = fread($resource, filesize("../../../altests/features/compare.feature"));
+               $data['testFeature'] = $testFeature;
+
 
           }
 
@@ -240,6 +243,13 @@ class Home extends CI_Controller{
     public function compareBrowsers(){
 
         $selBrowsers =  $_POST['selBrowsers'];
+        $isEdit = $_POST['isEdit2'];
+
+        //echo "This is it ".$isEdit.$featureVal;
+        if($isEdit == 'true'){
+            $contents = $_POST['featureVal'];
+            file_put_contents('../../../altests/features/compare.feature', $contents);
+        }
         $this->session->set_userdata('testBrowsers', $selBrowsers);
         $server= $_POST['serverval'];
          $this->session->set_userdata('testServer', $server);
@@ -274,6 +284,9 @@ class Home extends CI_Controller{
           if($isEdit == "true"){           
                $contents = $_POST['featuretextarea1'];
                file_put_contents('../../../altests/features/screenshotFeature.feature', $contents);
+               $resource = fopen("../../../altests/features/screenshotFeatureTest.feature", "r");
+               $testFeature = fread($resource, filesize("../../../altests/features/screenshotFeatureTest.feature"));
+               $data['testFeature'] = $testFeature;
        
           }
         $result = "Not set yet";
@@ -307,13 +320,19 @@ class Home extends CI_Controller{
                               }
         
         $data['browsers'] = $this->getBrowsers();
-
+        $data['isEdit'] = $isEdit;
         $this->load->view('view_compareBrowserSC',$data);
     }
      public function compareBrowsersSC(){
        
         $selBrowsers =  $_POST['selBrowsers'];
+        $isEdit = $_POST['isEdit2'];
        
+        //echo "This is it ".$isEdit.$featureVal;
+        if($isEdit == 'true'){
+            $contents = $_POST['featureVal'];
+            file_put_contents('../../../altests/features/screenshotFeatureTest.feature', $contents);
+        }
         $this->session->set_userdata('testBrowsersSC', $selBrowsers);
         $server = $_POST['serverval'];
          $this->session->set_userdata('testServerSC', $server);
